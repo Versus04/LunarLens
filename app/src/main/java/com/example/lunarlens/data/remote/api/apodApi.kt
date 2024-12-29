@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit
 
 private const val BASE_URL = "https://api.nasa.gov/planetary/"
 interface apodApi {
+
     @GET("apod")
     suspend fun getapod(
         @Query("api_key") api_key : String = Constants.api_key
