@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Lunar Lens</string>
+    <string name="apod">Astronomy Picture of the Day</string>
+    <string name="apodDescription">The Astronomy Picture of the Day (APOD) is a daily feature provided by NASA showcasing a different image or photograph of our universe, along with a brief explanation written by a professional </string>
+</resources>
