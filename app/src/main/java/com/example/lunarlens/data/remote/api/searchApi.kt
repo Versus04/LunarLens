@@ -19,7 +19,7 @@ private val retrofit3 : Retrofit = Retrofit.Builder()
     .baseUrl(BASE_URL)
     .build()
 
-class search{
+object search{
     val searchService : searchApi by lazy {
         retrofit3.create(searchApi::class.java)
     }

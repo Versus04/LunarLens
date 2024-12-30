@@ -5,6 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.lunarlens.data.remote.api.apodService
 import com.example.lunarlens.data.remote.api.planetservice
+import com.example.lunarlens.data.remote.api.search
+import com.example.lunarlens.data.remote.dto.Collection
+import com.example.lunarlens.data.remote.dto.Item
+import com.example.lunarlens.data.remote.dto.Link
+import com.example.lunarlens.data.remote.dto.LinkX
+import com.example.lunarlens.data.remote.dto.Metadata
+import com.example.lunarlens.data.remote.dto.SearchDTO
 import com.example.lunarlens.data.remote.dto.apodDTO
 import com.example.lunarlens.data.remote.dto.planetDTOItem
 import com.example.lunarlens.domain.repository.networkSpaceRepostiory
@@ -15,6 +22,27 @@ import kotlinx.coroutines.launch
 
 class homeScreenViewmodel : ViewModel()
 {
+    val emptyitems : List<Item> = emptyList()
+    val emptylinks : List<LinkX> = emptyList()
+    private val emptysearch= SearchDTO(
+        collection = Collection(
+            href = "TODO()",
+            items = emptyitems,
+            links = emptylinks,
+            metadata = Metadata(1),
+            version ="1"
+        )
+    )
+    private val emptyCollection = Collection(
+        href = "TODO()",
+        items = emptyitems,
+        links = emptylinks,
+        metadata = Metadata(1),
+        version ="1"
+    )
+    private val _searchResult = MutableStateFlow<Collection>(emptyCollection)
+    val searchResult : StateFlow<Collection> = _searchResult.asStateFlow()
+    
     private val _searchField = MutableStateFlow<String>("")
     val searchField : StateFlow<String> = _searchField.asStateFlow()
     private val _showBottomBar = MutableStateFlow<Boolean>(true)
@@ -79,8 +107,20 @@ class homeScreenViewmodel : ViewModel()
             }
         }
     }
+    fun getSearchResult()
+    {
+        viewModelScope.launch()
+        {
+            val response = search.searchService.getResult(_searchField.value)
+            response.body()?.let { response ->
+                _searchResult.value = response.collection
+                Log.d("kyamila" , response.collection.items.size.toString())
+            }
+        }
+    }
 init {
     getapod()
     //getplanets()
+
 }
 }
