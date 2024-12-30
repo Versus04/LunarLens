@@ -10,4 +10,10 @@ sealed class Screens {
     data object Search : Screens()
     @Serializable
     data object Mars : Screens()
+    @Serializable
+    data class apod(val hdurl : String ,
+                    val title: String ,
+                    val explanation : String,
+                    val copyright : String
+    ) : Screens()
 }

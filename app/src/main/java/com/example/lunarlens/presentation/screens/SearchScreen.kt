@@ -1,6 +1,7 @@
 package com.example.lunarlens.presentation.screens
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -37,6 +38,7 @@ import com.example.lunarlens.data.remote.api.search
 import com.example.lunarlens.data.remote.dto.Item
 import com.example.lunarlens.presentation.viewmodels.homeScreenViewmodel
 import androidx.compose.runtime.DisposableEffect
+import com.example.lunarlens.utils.Screens
 
 @Composable
 fun searchScreen( navController: NavController, homeScreenViewmodel: homeScreenViewmodel)
@@ -92,7 +94,7 @@ fun searchScreen( navController: NavController, homeScreenViewmodel: homeScreenV
         }
         items(searchresult.value.items)
         { items ->
-            searchItem(items)
+            searchItem(items, navController)
 
         }
 
@@ -101,7 +103,7 @@ fun searchScreen( navController: NavController, homeScreenViewmodel: homeScreenV
 
 
 @Composable
-fun searchItem(item : Item)
+fun searchItem(item : Item , navController: NavController)
 {
     val base  = "https://images-assets.nasa.gov/image/"
     val add = item.href.substring(37,46)

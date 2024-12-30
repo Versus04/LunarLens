@@ -23,20 +23,19 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.example.lunarlens.data.remote.dto.Item
 import com.example.lunarlens.presentation.viewmodels.homeScreenViewmodel
 import com.example.lunarlens.utils.RocketTakeoff
-import com.example.lunarlens.utils.ScreenList
 import com.example.lunarlens.utils.Screens
 
 //data class Screens(val name: String  , val icon : ImageVector , val route : String)
 @Composable
 fun MainScreen(homeScreenViewmodel: homeScreenViewmodel)
 {
+    val emptyitems : List<Item> = emptyList()
     val showBottomBar = homeScreenViewmodel.showBottomBar.collectAsState()
-    /*val screens = listOf<Screens>(Screens("Home" , Icons.Filled.Home , "home_screen"),
-        Screens("Search" , Icons.Filled.Search,"search_screen"),
-        Screens("Mars" , RocketTakeoff,"mars_screen")
-        )*/
+
     val selectedScreen = remember { mutableStateOf(0) }
     val navController = rememberNavController()
     Scaffold(bottomBar = {
@@ -75,7 +74,7 @@ fun MainScreen(homeScreenViewmodel: homeScreenViewmodel)
             modifier = Modifier.padding(paddinvalues)) {
 
             composable<Screens.Home>{
-                HomeScreen(homeScreenViewmodel)
+                HomeScreen(homeScreenViewmodel , navController)
             }
             composable<Screens.Search>
             {
@@ -83,6 +82,11 @@ fun MainScreen(homeScreenViewmodel: homeScreenViewmodel)
             }
             composable<Screens.Mars>{
                 marsPage(homeScreenViewmodel)
+            }
+            composable<Screens.apod>
+            {
+                val curr = it.toRoute<Screens.apod>()
+                apodDetails(navController ,curr)
             }
 
             /*composable(ScreenList.HomeScreen.route)

@@ -1,6 +1,7 @@
 package com.example.lunarlens.presentation.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -29,16 +30,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.lunarlens.R
 import coil3.compose.AsyncImage
 import com.example.lunarlens.presentation.viewmodels.homeScreenViewmodel
+import com.example.lunarlens.utils.Screens
 import com.example.lunarlens.utils.planetCard
 
 @Composable
-fun HomeScreen(homeScreenViewmodel: homeScreenViewmodel)
+fun HomeScreen(homeScreenViewmodel: homeScreenViewmodel , navController: NavController)
 {
     val planetData = homeScreenViewmodel.planetdata.collectAsState()
     val apodData  = homeScreenViewmodel.apod.collectAsState()
+    val imgsrc = apodData.value.hdurl
+    val title = apodData.value.title
+    val exp = apodData.value.explanation
+    val copy = apodData.value.copyright
     LazyColumn(
         Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)
             .statusBarsPadding()
@@ -50,7 +57,13 @@ fun HomeScreen(homeScreenViewmodel: homeScreenViewmodel)
 
             ) {
 
-                Card(Modifier){
+                Card(Modifier.clickable(
+                    onClick = {
+                       navController.navigate(Screens.apod(hdurl = imgsrc ,
+                           title = title , explanation = exp ,
+                           copyright = copy))
+                    }
+                )){
 
                     AsyncImage(
                         model = apodData.value.url,
