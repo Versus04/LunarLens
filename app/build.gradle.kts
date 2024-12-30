@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("com.google.devtools.ksp")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    kotlin("plugin.serialization") version "2.1.0"
 
     id("com.google.dagger.hilt.android")
 }
@@ -70,6 +71,8 @@ dependencies {
 
     //Dagger
     implementation("com.google.dagger:hilt-android:${dagger_version}")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
 
     //ksp
     ksp("androidx.room:room-compiler:${room_version}")

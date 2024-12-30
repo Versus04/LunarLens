@@ -57,7 +57,7 @@ fun searchScreen( navController: NavController, homeScreenViewmodel: homeScreenV
             Row(Modifier.fillMaxWidth()){
                 OutlinedTextField(leadingIcon = {
                     IconButton(onClick = {
-                        navController.navigateUp()
+                        navController.popBackStack()
 
 
                     }){

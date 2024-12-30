@@ -24,50 +24,68 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.lunarlens.presentation.viewmodels.homeScreenViewmodel
+import com.example.lunarlens.utils.RocketTakeoff
 import com.example.lunarlens.utils.ScreenList
+import com.example.lunarlens.utils.Screens
 
-data class Screens(val name: String  , val icon : ImageVector , val route : String)
+//data class Screens(val name: String  , val icon : ImageVector , val route : String)
 @Composable
 fun MainScreen(homeScreenViewmodel: homeScreenViewmodel)
 {
     val showBottomBar = homeScreenViewmodel.showBottomBar.collectAsState()
-    val screens = listOf<Screens>(Screens("Home" , Icons.Filled.Home , "home_screen"),
+    /*val screens = listOf<Screens>(Screens("Home" , Icons.Filled.Home , "home_screen"),
         Screens("Search" , Icons.Filled.Search,"search_screen"),
-        Screens("Mars" , Icons.Filled.LocationOn,"mars_screen")
-        )
+        Screens("Mars" , RocketTakeoff,"mars_screen")
+        )*/
     val selectedScreen = remember { mutableStateOf(0) }
     val navController = rememberNavController()
     Scaffold(bottomBar = {
         if(showBottomBar.value){
         NavigationBar() {
-            screens.forEachIndexed {index, screens->
-                NavigationBarItem(
-                    selected = selectedScreen.value==index,
-                    onClick = {selectedScreen.value = index
-                              navController.navigate(screens.route)},
-                    icon = {Icon(screens.icon , contentDescription = null)},
-                    colors = NavigationBarItemColors(
-                        selectedIconColor = MaterialTheme.colorScheme.primary,
-                        selectedTextColor = MaterialTheme.colorScheme.primary,
-                        selectedIndicatorColor = MaterialTheme.colorScheme.primaryContainer,
-                        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        disabledIconColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f),
-                        disabledTextColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f),
+            NavigationBarItem(
+                selected = false,
+                onClick ={navController.navigate(Screens.Home)},
+                icon = {Icon(Icons.Filled.Home , contentDescription = null)},
 
-                    )
-                    ,
-                    label = { Text(screens.name) },
-                    
-                )
+                label = {Text("Home")}
+            )
+            NavigationBarItem(
+                selected = false,
+                onClick ={navController.navigate(Screens.Search)
+
+                         },
+                icon = {Icon(Icons.Filled.Search , contentDescription = null)},
+
+                label = {Text("Search")}
+            )
+            NavigationBarItem(
+                selected = false,
+                onClick ={navController.navigate(Screens.Mars)
+
+                },
+                icon = {Icon(Icons.Filled.LocationOn , contentDescription = null)},
+
+                label = {Text("Mars")}
+            )
             }
         }}
-    }
     ) { paddinvalues ->
-        NavHost(startDestination = ScreenList.HomeScreen.route ,
+        NavHost(startDestination = Screens.Home ,
             navController = navController,
             modifier = Modifier.padding(paddinvalues)) {
-                composable(ScreenList.HomeScreen.route)
+
+            composable<Screens.Home>{
+                HomeScreen(homeScreenViewmodel)
+            }
+            composable<Screens.Search>
+            {
+                searchScreen(navController , homeScreenViewmodel)
+            }
+            composable<Screens.Mars>{
+                marsPage(homeScreenViewmodel)
+            }
+
+            /*composable(ScreenList.HomeScreen.route)
                 {
                     HomeScreen(homeScreenViewmodel)
                 }
@@ -86,7 +104,8 @@ fun MainScreen(homeScreenViewmodel: homeScreenViewmodel)
             {
                 marsPage(homeScreenViewmodel)
             }
-        }
+
+        */}
 
     }
 }
