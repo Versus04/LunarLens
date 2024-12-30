@@ -10,7 +10,9 @@ import com.example.lunarlens.data.remote.dto.Collection
 import com.example.lunarlens.data.remote.dto.Item
 import com.example.lunarlens.data.remote.dto.Link
 import com.example.lunarlens.data.remote.dto.LinkX
+import com.example.lunarlens.data.remote.dto.MarsDTO
 import com.example.lunarlens.data.remote.dto.Metadata
+import com.example.lunarlens.data.remote.dto.Photo
 import com.example.lunarlens.data.remote.dto.SearchDTO
 import com.example.lunarlens.data.remote.dto.apodDTO
 import com.example.lunarlens.data.remote.dto.planetDTOItem
@@ -22,6 +24,9 @@ import kotlinx.coroutines.launch
 
 class homeScreenViewmodel : ViewModel()
 {
+
+    private val _marsImage = MutableStateFlow<List<Photo>>(emptyList())
+    val  marsImage  : StateFlow<List<Photo>> = _marsImage.asStateFlow()
     val emptyitems : List<Item> = emptyList()
     val emptylinks : List<LinkX> = emptyList()
     private val emptysearch= SearchDTO(
@@ -118,9 +123,27 @@ class homeScreenViewmodel : ViewModel()
             }
         }
     }
+    fun getMarsphotos()
+    {
+        viewModelScope.launch()
+        {
+            try{
+                val response = apodService.apodservice.getMarsImages()
+                response.body()?.let { photo ->
+                    _marsImage.value = photo.photos
+                    Log.d("imgsrc" ,marsImage.value.size.toString())
+                }
+            }
+            catch (e: Exception)
+            {
+                Log.d("nasawaale" ,e.toString())
+            }
+        }
+    }
 init {
     getapod()
     //getplanets()
+    getMarsphotos()
 
 }
 }

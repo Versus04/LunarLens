@@ -74,6 +74,10 @@ fun MainScreen(homeScreenViewmodel: homeScreenViewmodel)
                     homeScreenViewmodel.setBottomBar(false)
                     searchScreen(navController,homeScreenViewmodel)
                 }
+            composable(ScreenList.MarsScreen.route)
+            {
+                marsPage(homeScreenViewmodel)
+            }
         }
 
     }
