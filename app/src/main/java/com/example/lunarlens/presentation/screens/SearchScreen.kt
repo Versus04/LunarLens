@@ -24,6 +24,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -35,6 +36,7 @@ import coil3.compose.AsyncImage
 import com.example.lunarlens.data.remote.api.search
 import com.example.lunarlens.data.remote.dto.Item
 import com.example.lunarlens.presentation.viewmodels.homeScreenViewmodel
+import androidx.compose.runtime.DisposableEffect
 
 @Composable
 fun searchScreen( navController: NavController, homeScreenViewmodel: homeScreenViewmodel)
@@ -42,12 +44,19 @@ fun searchScreen( navController: NavController, homeScreenViewmodel: homeScreenV
     val searchresult  = homeScreenViewmodel.searchResult.collectAsState()
     val searchField = homeScreenViewmodel.searchField.collectAsState()
     val x = searchresult.value
+    DisposableEffect(Unit) {
+        homeScreenViewmodel.setBottomBar(false)
+        onDispose {
+            homeScreenViewmodel.setBottomBar(true)
+        }
+
+    }
     LazyColumn(Modifier.padding(16.dp)){
         item()
         {
             Row(Modifier.fillMaxWidth()){
                 OutlinedTextField(leadingIcon = {
-                    IconButton(onClick = { homeScreenViewmodel.setBottomBar(true)
+                    IconButton(onClick = {
                         navController.navigateUp()
 
 

@@ -24,7 +24,6 @@ import kotlinx.coroutines.launch
 
 class homeScreenViewmodel : ViewModel()
 {
-
     private val _marsImage = MutableStateFlow<List<Photo>>(emptyList())
     val  marsImage  : StateFlow<List<Photo>> = _marsImage.asStateFlow()
     val emptyitems : List<Item> = emptyList()
@@ -51,7 +50,7 @@ class homeScreenViewmodel : ViewModel()
     private val _searchField = MutableStateFlow<String>("")
     val searchField : StateFlow<String> = _searchField.asStateFlow()
     private val _showBottomBar = MutableStateFlow<Boolean>(true)
-    val showBottomBar : StateFlow<Boolean> = _showBottomBar.asStateFlow()
+    val showBottomBar : StateFlow<Boolean> = _showBottomBar
     val planets =
         listOf<String>("Mercury","Venus",
             "Earth", "Mars", "Jupiter", "Saturn",
@@ -116,11 +115,17 @@ class homeScreenViewmodel : ViewModel()
     {
         viewModelScope.launch()
         {
-            val response = search.searchService.getResult(_searchField.value)
-            response.body()?.let { response ->
-                _searchResult.value = response.collection
-                Log.d("kyamila" , response.collection.items.size.toString())
+            try {
+                val response = search.searchService.getResult(_searchField.value)
+                response.body()?.let { response ->
+                    _searchResult.value = response.collection
+                    Log.d("kyamila" , response.collection.items.size.toString())
+                }
+            }catch (e: Exception)
+            {
+                Log.d("searcherror", e.toString())
             }
+
         }
     }
     fun getMarsphotos()

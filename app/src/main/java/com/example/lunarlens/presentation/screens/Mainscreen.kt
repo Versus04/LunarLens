@@ -14,6 +14,7 @@ import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,6 +38,7 @@ fun MainScreen(homeScreenViewmodel: homeScreenViewmodel)
     val selectedScreen = remember { mutableStateOf(0) }
     val navController = rememberNavController()
     Scaffold(bottomBar = {
+        if(showBottomBar.value){
         NavigationBar() {
             screens.forEachIndexed {index, screens->
                 NavigationBarItem(
@@ -59,7 +61,7 @@ fun MainScreen(homeScreenViewmodel: homeScreenViewmodel)
                     
                 )
             }
-        }
+        }}
     }
     ) { paddinvalues ->
         NavHost(startDestination = ScreenList.HomeScreen.route ,
@@ -71,7 +73,13 @@ fun MainScreen(homeScreenViewmodel: homeScreenViewmodel)
                 }
                 composable(ScreenList.SearchScreen.route)
                 {
-                    homeScreenViewmodel.setBottomBar(false)
+                    DisposableEffect(Unit) {
+                        homeScreenViewmodel.setBottomBar(false)
+                        onDispose {
+                            homeScreenViewmodel.setBottomBar(true)
+                        }
+
+                    }
                     searchScreen(navController,homeScreenViewmodel)
                 }
             composable(ScreenList.MarsScreen.route)
