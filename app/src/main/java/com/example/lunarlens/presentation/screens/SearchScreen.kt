@@ -5,9 +5,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -53,10 +55,10 @@ fun searchScreen( navController: NavController, homeScreenViewmodel: homeScreenV
         }
 
     }
-    LazyColumn(Modifier.padding(16.dp)){
+    LazyColumn(Modifier.systemBarsPadding().padding(16.dp)){
         item()
         {
-            Row(Modifier.fillMaxWidth()){
+            Row(Modifier.fillMaxSize()){
                 OutlinedTextField(leadingIcon = {
                     IconButton(onClick = {
                         navController.popBackStack()
@@ -68,7 +70,8 @@ fun searchScreen( navController: NavController, homeScreenViewmodel: homeScreenV
                     label= {Text("Search", style = MaterialTheme.typography.bodyMedium)},value = searchField.value,
                     onValueChange = {homeScreenViewmodel.updateSearch(it) } ,
                     modifier = Modifier, trailingIcon = {
-                        IconButton(onClick = {homeScreenViewmodel.updateSearch(searchField.value)
+                        IconButton(onClick = {
+                            homeScreenViewmodel.updateSearch(searchField.value)
                         homeScreenViewmodel.getSearchResult()
                         }) {
                             Icon(
@@ -109,7 +112,10 @@ fun searchItem(item : Item , navController: NavController)
     val add = item.href.substring(37,46)
     val final = item.href.substring(37,45)+"~orig.jpg"
     val finalLink = base+add+final
-    Card(Modifier.fillMaxWidth().padding(bottom = 8 .dp)) {
+    Card(Modifier.fillMaxWidth().padding(bottom = 8 .dp)
+        .clickable(onClick = {navController
+            .navigate(Screens.DetailsPage(hdurl = finalLink , title = item.data[0].title,
+                description = item.data[0].description ))})) {
         Row(Modifier.fillMaxWidth()) {
             AsyncImage(model = item.links[0].href , contentDescription = null ,
                 modifier = Modifier.width(100.dp).height(100.dp),

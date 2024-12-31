@@ -11,9 +11,15 @@ sealed class Screens {
     @Serializable
     data object Mars : Screens()
     @Serializable
-    data class apod(val hdurl : String ,
-                    val title: String ,
-                    val explanation : String,
-                    val copyright : String
+    data class apod(val hdurl : String ="",
+                    val title: String ="",
+                    val explanation : String="",
+                    val copyright : String=""
+    ) : Screens()
+    @Serializable
+    data class DetailsPage(
+        val title: String ,
+        val hdurl: String ,
+        val description : String
     ) : Screens()
 }

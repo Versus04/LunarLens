@@ -31,7 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 
 @Composable
-fun apodDetails( navController: NavController,apod: Screens.apod)
+fun apodDetails( onclick : ()->Unit ,apod: Screens.apod)
 {
     LazyColumn(Modifier.padding(start = 16.dp , end = 16.dp)) {
         item()
@@ -39,7 +39,9 @@ fun apodDetails( navController: NavController,apod: Screens.apod)
             Row(Modifier.fillMaxWidth() ,
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween) {
-                IconButton(onClick = {navController.popBackStack()}) {
+                IconButton(onClick = {
+                    onclick()
+                }) {
                     Icon(imageVector = Icons.Filled.ArrowBack , contentDescription = null)
 
                 }

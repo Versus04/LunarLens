@@ -42,12 +42,14 @@ fun HomeScreen(homeScreenViewmodel: homeScreenViewmodel , navController: NavCont
 {
     val planetData = homeScreenViewmodel.planetdata.collectAsState()
     val apodData  = homeScreenViewmodel.apod.collectAsState()
-    val imgsrc = apodData.value.hdurl
-    val title = apodData.value.title
-    val exp = apodData.value.explanation
-    val copy = apodData.value.copyright
+    val imgsrc = apodData.value.hdurl ?: ""
+    val title = apodData.value.title ?: ""
+    val exp = apodData.value.explanation ?: ""
+    val copy = apodData.value.copyright ?: ""
     LazyColumn(
-        Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)
+        Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surface)
             .statusBarsPadding()
             .padding(16.dp)) {
         item()

@@ -20,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -71,7 +72,7 @@ fun MainScreen(homeScreenViewmodel: homeScreenViewmodel)
     ) { paddinvalues ->
         NavHost(startDestination = Screens.Home ,
             navController = navController,
-            modifier = Modifier.padding(paddinvalues)) {
+            modifier = Modifier.padding()) {
 
             composable<Screens.Home>{
                 HomeScreen(homeScreenViewmodel , navController)
@@ -86,7 +87,12 @@ fun MainScreen(homeScreenViewmodel: homeScreenViewmodel)
             composable<Screens.apod>
             {
                 val curr = it.toRoute<Screens.apod>()
-                apodDetails(navController ,curr)
+                apodDetails({ navController.popBackStack() } ,curr)
+            }
+            composable<Screens.DetailsPage>
+            {
+                val currdata = it.toRoute<Screens.DetailsPage>()
+                DetailPage(currdata , { navController.popBackStack() })
             }
 
             /*composable(ScreenList.HomeScreen.route)
@@ -110,6 +116,8 @@ fun MainScreen(homeScreenViewmodel: homeScreenViewmodel)
             }
 
         */}
+        Text("", modifier = Modifier.padding(paddinvalues))
+
 
     }
 }
