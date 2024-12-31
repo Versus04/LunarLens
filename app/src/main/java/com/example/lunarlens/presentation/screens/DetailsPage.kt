@@ -1,5 +1,6 @@
 package com.example.lunarlens.presentation.screens
 
+import android.util.Log
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -33,6 +34,16 @@ import com.example.lunarlens.utils.Screens
 @Composable
 fun DetailPage(item : Screens.DetailsPage , onclick: ()-> Unit)
 {
+    Log.d("itemthumb" , item.hdurl)
+    var link =""
+    if(item.hdurl=="")
+    {
+        link=item.thumb
+    }
+    else{
+        link = item.hdurl
+    }
+
     LazyColumn(
         Modifier
             .systemBarsPadding()
@@ -41,7 +52,7 @@ fun DetailPage(item : Screens.DetailsPage , onclick: ()-> Unit)
         {
             Row(Modifier.fillMaxWidth() ,
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween) {
+                horizontalArrangement = Arrangement.Start) {
                 IconButton(onClick = {
                     onclick()
                 }) {
@@ -55,7 +66,7 @@ fun DetailPage(item : Screens.DetailsPage , onclick: ()-> Unit)
         item()
         {
 
-            Card(Modifier.clip(RoundedCornerShape(8.dp))){ AsyncImage(model = item.hdurl, contentDescription = item.title) }
+            Card(Modifier.clip(RoundedCornerShape(8.dp))){ AsyncImage(model = link, contentDescription = item.title) }
             Spacer(Modifier.height(8.dp))
 
         }

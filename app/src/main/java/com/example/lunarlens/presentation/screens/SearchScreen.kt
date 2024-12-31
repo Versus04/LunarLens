@@ -1,7 +1,8 @@
 package com.example.lunarlens.presentation.screens
-
+import com.example.lunarlens.utils.Search
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -55,33 +56,30 @@ fun searchScreen( navController: NavController, homeScreenViewmodel: homeScreenV
         }
 
     }
-    LazyColumn(Modifier.systemBarsPadding().padding(16.dp)){
+    LazyColumn(Modifier.systemBarsPadding().padding(end = 16.dp , start = 16.dp , bottom = 16.dp)){
         item()
         {
-            Row(Modifier.fillMaxSize()){
-                OutlinedTextField(leadingIcon = {
+            Row(Modifier.fillMaxSize() , horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically){
+                OutlinedTextField(
+                    leadingIcon = {
                     IconButton(onClick = {
                         navController.popBackStack()
 
 
                     }){
-                    Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = null)
+                    Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = null ,
+                        tint = MaterialTheme.colorScheme.primary)
                 }},
-                    label= {Text("Search", style = MaterialTheme.typography.bodyMedium)},value = searchField.value,
-                    onValueChange = {homeScreenViewmodel.updateSearch(it) } ,
-                    modifier = Modifier, trailingIcon = {
-                        IconButton(onClick = {
-                            homeScreenViewmodel.updateSearch(searchField.value)
-                        homeScreenViewmodel.getSearchResult()
-                        }) {
-                            Icon(
-                                Icons.Filled.Search,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        }
-
-                    },
+                    label= {
+                        Text("Search",
+                            style = MaterialTheme.typography.bodyMedium)},
+                    value = searchField.value,
+                    onValueChange =
+                    {
+                        homeScreenViewmodel.updateSearch(it)
+                    } ,
+                    modifier = Modifier,
                     colors =TextFieldDefaults.outlinedTextFieldColors(
                         textColor = MaterialTheme.colorScheme.onSurface,
                         cursorColor = MaterialTheme.colorScheme.primary,
@@ -91,14 +89,22 @@ fun searchScreen( navController: NavController, homeScreenViewmodel: homeScreenV
                         unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     )
-
+                IconButton(onClick = {
+                    homeScreenViewmodel.updateSearch(searchField.value)
+                    homeScreenViewmodel.getSearchResult()
+                }) {
+                    Icon(
+                        imageVector = Search,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
             }
             Spacer(Modifier.height(8.dp))
         }
         items(searchresult.value.items)
         { items ->
             searchItem(items, navController)
-
         }
 
     }
@@ -115,7 +121,7 @@ fun searchItem(item : Item , navController: NavController)
     Card(Modifier.fillMaxWidth().padding(bottom = 8 .dp)
         .clickable(onClick = {navController
             .navigate(Screens.DetailsPage(hdurl = finalLink , title = item.data[0].title,
-                description = item.data[0].description ))})) {
+                description = item.data[0].description , thumb = item.links[0].href ))})) {
         Row(Modifier.fillMaxWidth()) {
             AsyncImage(model = item.links[0].href , contentDescription = null ,
                 modifier = Modifier.width(100.dp).height(100.dp),

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -33,7 +34,7 @@ import androidx.navigation.NavController
 @Composable
 fun apodDetails( onclick : ()->Unit ,apod: Screens.apod)
 {
-    LazyColumn(Modifier.padding(start = 16.dp , end = 16.dp)) {
+    LazyColumn(Modifier.systemBarsPadding().padding(start = 16.dp , end = 16.dp)) {
         item()
         {
             Row(Modifier.fillMaxWidth() ,

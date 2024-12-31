@@ -20,6 +20,7 @@ sealed class Screens {
     data class DetailsPage(
         val title: String ,
         val hdurl: String ,
+        val thumb : String ,
         val description : String
     ) : Screens()
 }
